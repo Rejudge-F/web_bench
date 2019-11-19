@@ -3,6 +3,9 @@
 #include <iostream>
 
 Socket::Socket(const char *host, int clientPort) {
+    unsigned long inaddr;
+    sockaddr_in ad;
+    hostent *hp;
     memset(&ad, 0, sizeof(ad));
     ad.sin_family = AF_INET;
 
@@ -33,4 +36,8 @@ Socket::Socket(const char *host, int clientPort) {
 
 Socket::~Socket() {
     close(sock);
+}
+
+int Socket::GetSocket() {
+    return sock;
 }

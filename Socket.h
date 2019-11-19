@@ -8,10 +8,7 @@ class Socket {
 public: 
     Socket(const char *host, int clientPort);
     ~Socket();
-
+    int GetSocket();
 private:
     int sock;
-    unsigned long inaddr;
-    sockaddr_in ad;
-    hostent *hp;
 };
