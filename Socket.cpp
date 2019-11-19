@@ -39,5 +39,8 @@ Socket::~Socket() {
 }
 
 int Socket::GetSocket() {
+    if(sock < 0) {
+        return -1;
+    }
     return sock;
 }

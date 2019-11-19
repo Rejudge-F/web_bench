@@ -8,6 +8,7 @@ class Socket {
 public: 
     Socket(const char *host, int clientPort);
     ~Socket();
+    // get socket
     int GetSocket();
 private:
     int sock;
