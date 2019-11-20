@@ -10,6 +10,8 @@ public:
     ~Socket();
     // get socket
     int GetSocket();
+    ssize_t Write(char *buff);
+    ssize_t Read(char *buff);
 private:
     int sock;
 };
