@@ -3,15 +3,16 @@ dir=$(notdir $(src))
 objs=$(patsubst %.cpp,%.o,$(dir)) 
 logs=./log/*
 CC=g++
-CFLAGS=-Wall -O3 -g -lpthread
+CFLAGS=-Wall -g -O3 
+LINK=-lpthread
 
 
 target=./bin/App
 
 $(target):$(objs)
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) -o $@ $^
 %.o:%.cpp 
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) -c -o $@ $^ $(LINK)
 
 .phony:clean run
 clean:
