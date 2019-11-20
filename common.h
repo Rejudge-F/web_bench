@@ -13,3 +13,5 @@ enum HttpMethod {
 
 // global variable 
 int httpVersion=10
+volatile int timerExpired=0;
+
