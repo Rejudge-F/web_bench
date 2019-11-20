@@ -1,7 +1,7 @@
 src=$(wildcard *.cpp) 
 dir=$(notdir $(src)) 
 objs=$(patsubst %.cpp,%.o,$(dir)) 
-logs=./log/*
+logs=./logs/*
 CC=g++
 CFLAGS=-Wall -g -O3 
 LINK=-lpthread
