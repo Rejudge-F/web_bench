@@ -16,7 +16,7 @@ enum HttpMethod {
 };
 
 // global variable 
-static int HttpVersion=10;
+int HttpVersion=10;
 volatile int timerExpired=0;
 
 struct BenchInfo {
