@@ -1,3 +1,4 @@
+#include <iostream>
 enum HttpVersion {
     HTTP_10 = 10,
     HTTP_11 
@@ -12,8 +13,14 @@ enum HttpMethod {
 };
 
 // global variable 
-int httpVersion=10
+int httpVersion=10;
 volatile int timerExpired=0;
+
+struct BenchInfo {
+    int speed;
+    int failed;
+    int bytes;
+};
 
 // InitLogger init logger with logPath
 bool InitLogger(const std::string &logPath) {
