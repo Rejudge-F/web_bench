@@ -1,6 +1,9 @@
 #include "bench_client.h"
 
-BenchClient::BenchClient(const std::string host, const int port, std::shared_ptr<ClientArguments> &args_): sock(new Socket(host.c_str(), port)),args(args_) {
+BenchClient::BenchClient(const std::string host, const int port, std::shared_ptr<ClientArguments> &args_): 
+    sock(new Socket(host.c_str(), port)),
+    args(args_)
+{
     sTime = clock();
 }
 
@@ -11,20 +14,8 @@ BenchClient::~BenchClient() {
     sock.reset();
 }
 
-// BuildRequest Form a request in light of method and url
-std::string BenchClient::BuildRequest(std::string url) {
-    memset(host, 0, MAXHOSTNAMELEN);
-    string request;
-    request.clear();
-    switch(args->httpMethod) {
-        case METHOD_GET:   request += "GET"; break;
-        case METHOD_POST:  request += "POST"; break;
-        case METHON_HEAD:  request += "HEAD"; break;
-        case METHOD_TRACE: request += "TRACE"; break;
-        default:
-    }
-}
-
 // Bench Benchmark Callback function
 void BenchClient::Bench() {
+    
 }
+
