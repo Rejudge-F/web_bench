@@ -13,6 +13,7 @@ public:
     BenchClientManager(force, reload, method, clients, proxyHost, proxyPort);
     ~BenchClientManager();
     void BenchMark();
+    std::string BuildRequest(string url);
 private:
     int _force;
     int _reload;
