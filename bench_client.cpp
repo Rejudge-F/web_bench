@@ -16,6 +16,40 @@ BenchClient::~BenchClient() {
 
 // Bench Benchmark Callback function
 void BenchClient::Bench() {
-    
+    BenchInfo benchInfo;
+    char response[81920];
+    ssize_t requestLen = args->request.length();
+    memset(&benchInfo, 0, sizeof(benchInfo));
+    nexttry:;
+    while(true) {
+        if(sock->GetSocket() < 0) {
+            benchInfo.failed++;
+            break;
+        }
+
+        // generate request not const request
+        char request[2048];
+        strcpy(request, args->request.c_str());
+
+        // send request to server 
+        if(sock->Write(request) != requestLen) {
+            benchInfo.failed++;
+            goto nexttry;
+        }
+
+        // recv response from server 
+        if(args->force == 0) {
+            size_t responseLen = sock->Read(response);
+            if(responseLen < 0) {
+                benchInfo.failed++;
+                goto nexttry;
+            }
+            SPDLOG_DEBUG("response: {0}\n", response);
+            benchInfo.bytes += responseLen;
+            benchInfo.speed++;
+            break;
+        }
+    }
+    args->messageQeueue->Push(benchInfo);
 }
 

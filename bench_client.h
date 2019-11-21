@@ -23,7 +23,6 @@ public:
     ~BenchClient();
     void Bench();
 private:
-    char host[MAXHOSTNAMELEN];
     std::shared_ptr<Socket> sock; 
     std::shared_ptr<ClientArguments> args;
     clock_t sTime, eTime;
