@@ -3,6 +3,7 @@
 
 #include "bench_client.h"
 #include "message_queue.h"
+#include "common.h"
 #include <vector>
 #include <string>
 
@@ -11,7 +12,7 @@ public:
     BenchClientManager();
     BenchClientManager(force, reload, method, clients, proxyHost, proxyPort);
     ~BenchClientManager();
-    BenchMark();
+    void BenchMark();
 private:
     int _force;
     int _reload;
