@@ -10,7 +10,7 @@ enum HttpVersion {
 enum HttpMethod {
     METHOD_GET = 1,
     METHOD_POST,
-    METHOD_OPTION,
+    METHOD_OPTIONS,
     METHOD_HEAD,
     METHOD_TRACE
 };
