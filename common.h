@@ -1,3 +1,6 @@
+#ifndef COMMON_H
+#define COMMON_H 
+
 #include <iostream>
 enum HttpVersion {
     HTTP_10 = 10,
@@ -34,3 +37,4 @@ bool InitLogger(const std::string &logPath) {
     return true;
 }
 
+#endif // COMMON_H

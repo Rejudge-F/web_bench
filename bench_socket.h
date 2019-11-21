@@ -1,3 +1,6 @@
+#ifndef BENCH_SOCKET_H
+#define BENCH_SOCKET_H 
+
 #include <unistd.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -15,3 +18,5 @@ public:
 private:
     int sock;
 };
+
+#endif // BENCH_SOCKET_H

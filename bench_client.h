@@ -1,3 +1,6 @@
+#ifndef BENCH_CLIENT_H
+#define BENCH_CLIENT_H 
+
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/spdlog.h" // implement for SPDLOG_...
 #include "bench_socket.h"
@@ -27,3 +30,5 @@ private:
     std::shared_ptr<ClientArguments> args;
     clock_t sTime, eTime;
 };
+
+#endif // BENCH_CLIENT_H
