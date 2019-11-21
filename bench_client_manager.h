@@ -9,21 +9,21 @@
 
 class BenchClientManager {
 public:
-    BenchClientManager();
-    BenchClientManager(force, reload, method, clients, proxyHost, proxyPort);
+    BenchClientManager(int force, int reload, int method, int clients, std::string proxyHost, int proxyPort, std::string url);
     ~BenchClientManager();
     void BenchMark();
-    std::string BuildRequest(string url);
+    std::string BuildRequest(std::string url);
 private:
     int _force;
     int _reload;
     int _method;
-    int _clients;
+    int _clientNum;
     int _proxyPort;
-    clock_t sTime;
-    clock_t eTime;
+    clock_t _sTime;
+    clock_t _eTime;
+    std::string _url;
     std::string _proxyHost;
-    MessageQueue<BenchInfo> _messageQueue;
+    MessageQueue<BenchInfo> *_messageQueue;
     std::vector<std::shared_ptr<BenchClient> > _clients;
 };
 

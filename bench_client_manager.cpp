@@ -1,30 +1,24 @@
 #include "bench_client_manager.h"
 #include <stdlib.h> // impllement for itoa
 
-BenchClientManager::BenchClientManager():
-    _force(0),
-    _reload(0),
-    _method(METHOD_GET),
-    _clients(1),
-    _proxyPort(0),
-    _proxyHost("http://127.0.0.1"),
-    sTime(clock())
-{}
-
-BenchClientManager::BenchClientManager(force, reload, method, clients, proxyHost, proxyPort):
+BenchClientManager::BenchClientManager(int force, int reload, int method, int clients, std::string proxyHost, int proxyPort, std::string url):
     _force(force),
     _reload(reload),
     _method(method),
-    _clients(clients),
-    _proxyHost(_proxyHost),
-    _proxyPort(_proxyPort)
+    _clientNum(clients),
+    _proxyPort(proxyPort),
+    _sTime(clock()),
+    _eTime(clock()),
+    _url(url),
+    _proxyHost(proxyHost),
+    _messageQueue(new MessageQueue<BenchInfo>())
 {}
 
 BenchClientManager::~BenchClientManager() {
-    eTime = clock();
-    SPDLOG_INFO("bench mark: elpased time {0} us", (double)(eTime-sTime));
-    for(auto clientPtr : _clients) {
-        clientPtr->reset();
+    _eTime = clock();
+    SPDLOG_INFO("bench mark: elpased time {0} us", (double)(_eTime-_sTime));
+    for(int i = 0; i < (int)_clients.size(); i++) {
+        _clients[i].reset();
     }
 }
 
@@ -41,7 +35,7 @@ std::string BenchClientManager::BuildRequest(std::string url) {
 
 
     // swich a protocol by method
-    if(_method == METHOD_TRACE || _method == METHOD_OPTION) httpVersion = HTTP_11;
+    if(_method == METHOD_TRACE || _method == METHOD_OPTIONS) HttpVersion = HTTP_11;
     
     // form request
     std::string request;
@@ -96,7 +90,7 @@ std::string BenchClientManager::BuildRequest(std::string url) {
     }
     request += "\r\n";
     request += "User-Agent: Zephyr's WebBench\r\n";
-    request += "Host: " + _proxyHost + ":" + itoa(_proxyPort) + "\r\n";
+    request += "Host: " + _proxyHost + ":" + std::to_string(_proxyPort) + "\r\n";
     if(_reload) {
         request += "Pragma: no-cache\r\n";
     }
@@ -109,6 +103,17 @@ std::string BenchClientManager::BuildRequest(std::string url) {
 }
 
 void BenchClientManager::BenchMark() {
+    // Form Arguments
+    std::shared_ptr<ClientArguments> clientArguments(new ClientArguments);
+    clientArguments->httpMethod = _method;
+    clientArguments->force = _force;
+    clientArguments->forceReload = _reload;
+    clientArguments->request = BuildRequest(_url);
+    clientArguments->messageQeueue = _messageQueue;
+
+    for(int i = 0; i < _clientNum; i++) {
+        // start thread to test        
+    } 
     
 }
 
