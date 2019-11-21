@@ -1,5 +1,5 @@
-#ifndef COMMON_H
-#define COMMON_H 
+#ifndef COMMON_H_
+#define COMMON_H_
 
 #include <iostream>
 enum HttpVersion {
@@ -16,7 +16,7 @@ enum HttpMethod {
 };
 
 // global variable 
-int httpVersion=10;
+static int HttpVersion=10;
 volatile int timerExpired=0;
 
 struct BenchInfo {
@@ -37,4 +37,4 @@ bool InitLogger(const std::string &logPath) {
     return true;
 }
 
-#endif // COMMON_H
+#endif // COMMON_H_
