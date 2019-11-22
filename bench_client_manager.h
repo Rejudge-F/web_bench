@@ -24,7 +24,7 @@ private:
     std::string _url;
     std::string _proxyHost;
     MessageQueue<BenchInfo> *_messageQueue;
-    std::vector<std::shared_ptr<BenchClient> > _clients;
+    std::vector<BenchClient*> _clients;
 };
 
 #endif // BENCH_CLIENT_MANAGER_H

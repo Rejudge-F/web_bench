@@ -1,9 +1,28 @@
 #include "bench_client_manager.h"
-#include <stdlib.h> // impllement for itoa
+#include <errno.h> // implement for perror 
+#include <pthread.h> // implement for thread func
 
 // global variable 
 static int HttpVersion=10;
 static volatile int timerExpired=0;
+
+// Thread Callback Function
+void* callback(void *client) {
+    BenchClient *benchClient = static_cast<BenchClient *>(client);
+    benchClient->Bench();
+    return nullptr;
+}
+
+// Create thread to run callback 
+int CreateThread(void* (*func)(void *), void *args) {
+    pthread_t threadId;
+    int ret = pthread_create(&threadId, nullptr, func, args);
+    if(ret != 0) {
+        perror(strerror(errno));
+        return -1;
+    }
+    return (int)threadId;
+}
 
 BenchClientManager::BenchClientManager(int force, int reload, int method, int clients, std::string proxyHost, int proxyPort, std::string url):
     _force(force),
@@ -22,8 +41,9 @@ BenchClientManager::~BenchClientManager() {
     _eTime = clock();
     SPDLOG_INFO("bench mark: elpased time {0} us", (double)(_eTime-_sTime));
     for(int i = 0; i < (int)_clients.size(); i++) {
-        _clients[i].reset();
+        delete _clients[i];
     }
+    delete _messageQueue;
 }
 
 std::string BenchClientManager::BuildRequest(std::string url) {
@@ -117,7 +137,34 @@ void BenchClientManager::BenchMark() {
 
     for(int i = 0; i < _clientNum; i++) {
         // start thread to test        
+        BenchClient *benchClient = new BenchClient(_proxyHost, _proxyPort, clientArguments);
+        _clients.push_back(benchClient);
+        int pid = CreateThread(callback, static_cast<void*>(benchClient));
+        if(pid == -1) {
+            SPDLOG_ERROR("THREAD CREATE FAILED!");
+            continue;
+        }
     } 
+
+    std::shared_ptr<BenchInfo> benchSum;
+    memset(&benchSum, 0, sizeof(benchSum));
+
+    int client_num = _clientNum;
+    
+    BenchInfo t_bench;
+    
+    while(client_num > 0) {
+        bool ok = _messageQueue->Pop(&t_bench, true);
+        if(!ok) {
+            continue;
+        }
+        benchSum->speed += t_bench.speed;
+        benchSum->failed += t_bench.failed;
+        benchSum->bytes += t_bench.bytes;
+        memset(&t_bench, 0, sizeof(t_bench));
+        client_num--;
+    }
+
     
 }
 
