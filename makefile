@@ -10,7 +10,7 @@ LINK=-lpthread
 target=./bin/App
 
 $(target):$(objs)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^ $(LINK)
 %.o:%.cpp 
 	$(CC) $(CFLAGS) -c -o $@ $^ $(LINK)
 
