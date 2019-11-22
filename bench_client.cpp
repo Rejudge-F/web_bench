@@ -9,7 +9,7 @@ BenchClient::BenchClient(const std::string host, const int port, std::shared_ptr
 
 BenchClient::~BenchClient() {
     eTime = clock();
-    SPDLOG_DEBUG("end: {0}: Method: {1} force: {2} forceReload: {3} eplased: {4} us", __FUNCTION__, args->httpMethod, args->force, args->forceReload, (double)(eTime-sTime));
+    SPDLOG_DEBUG("finish: {0}: Method: {1} force: {2} forceReload: {3} eplased: {4} us", __FUNCTION__, args->httpMethod, args->force, args->forceReload, (double)(eTime-sTime));
     args.reset();
     sock.reset();
 }
