@@ -1,6 +1,10 @@
 #include "bench_client_manager.h"
 #include <stdlib.h> // impllement for itoa
 
+// global variable 
+static int HttpVersion=10;
+static volatile int timerExpired=0;
+
 BenchClientManager::BenchClientManager(int force, int reload, int method, int clients, std::string proxyHost, int proxyPort, std::string url):
     _force(force),
     _reload(reload),
