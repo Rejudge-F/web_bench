@@ -1,3 +1,8 @@
+#include <iostream>
+#include <string>
+#include "spdlog/spdlog.h"
+#include "spdlog/sinks/basic_file_sink.h"
+//
 // InitLogger init logger with logPath
 bool InitLogger(const std::string &logPath) {
     try {
