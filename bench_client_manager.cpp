@@ -154,7 +154,7 @@ void BenchClientManager::BenchMark() {
     BenchInfo t_bench;
     
     while(client_num > 0) {
-        bool ok = _messageQueue->Pop(&t_bench, true);
+        bool ok = _messageQueue->Pop(t_bench, true);
         if(!ok) {
             continue;
         }
