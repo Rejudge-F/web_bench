@@ -11,7 +11,7 @@ class BenchClientManager {
 public:
     BenchClientManager(int force, int reload, int method, int clients, std::string proxyHost, int proxyPort, std::string url);
     ~BenchClientManager();
-    void BenchMark();
+    void BenchMark(int benchTime);
     std::string BuildRequest(std::string url);
 private:
     int _force;

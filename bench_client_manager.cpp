@@ -6,6 +6,11 @@
 static int HttpVersion=10;
 static volatile int timerExpired=0;
 
+// alarm handler 
+static void alarm_handler(int signal) {
+	timerExpired = 1;
+}
+
 // Thread Callback Function
 void* callback(void *client) {
     BenchClient *benchClient = static_cast<BenchClient *>(client);
@@ -126,7 +131,17 @@ std::string BenchClientManager::BuildRequest(std::string url) {
     return request;
 }
 
-void BenchClientManager::BenchMark() {
+void BenchClientManager::BenchMark(int benchTime) {
+	// start a alarm 
+	struct sigaction sa;
+    /* setup alarm signal handler */
+    sa.sa_handler=alarm_handler;
+    sa.sa_flags=0;
+    if(sigaction(SIGALRM,&sa,NULL))
+        exit(3);
+    
+    alarm(benchTime); // after benchtime,then exit
+
     // Form Arguments
     std::shared_ptr<ClientArguments> clientArguments(new ClientArguments);
     clientArguments->httpMethod = _method;
@@ -154,7 +169,10 @@ void BenchClientManager::BenchMark() {
     BenchInfo t_bench;
     
     while(client_num > 0) {
-        bool ok = _messageQueue->Pop(t_bench, true);
+		if (timerExpired == 1) {
+			break;
+		}
+        bool ok = _messageQueue->Pop(t_bench, false);
         if(!ok) {
             continue;
         }
@@ -165,6 +183,8 @@ void BenchClientManager::BenchMark() {
         client_num--;
     }
 
-    
+	std::cout << "speed: " <<  benchSum->speed << " failed: " << benchSum->failed << " bytes: " << benchSum->bytes << " Bytes" << std::endl;
+
+	return ;
 }
 
