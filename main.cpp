@@ -1,6 +1,5 @@
 #include <iostream>
 #include "common.h"
-#include <sys/params>
 #include <getopt.h>
 #include <signal.h>
 
@@ -24,7 +23,7 @@ static const struct option long_options[] {
 	{"trace", no_argument, &method, METHOD_TRACE},
 	{"options", no_argument, &method, METHOD_OPTIONS},
 	{"version", no_argument, nullptr, 'V'},
-	{"url", required_argument, &url, 'u'},
+	{"url", required_argument, nullptr, 'u'},
 	{"clients", required_argument, &clientsNum, 'c'},
 	{"help", no_argument, nullptr, '?'},
 	{nullptr, 0, nullptr, 0}
