@@ -18,6 +18,6 @@ $(target):$(objs)
 clean:
 	rm -rf $(objs) $(target) $(logs) 
 run:
-	./bin/App -r -t 50 -u http://localhost:80/hello.html -c 50000 --get
+	./bin/App -r -t 50 -u http://localhost:80/hello.html -c 5000 --get
 cleanlog:
 	rm -rf ./logs/*
