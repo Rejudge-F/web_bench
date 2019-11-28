@@ -13,6 +13,16 @@ public:
     ~BenchClientManager();
     void BenchMark(int benchTime);
     std::string BuildRequest(std::string url);
+	std::string GetHost(){ return _proxyHost; }
+	int GetPort() { return _proxyPort; }
+	int GetForce() { return _force; }
+	int GetMethod() { return _method; }
+	int GetReload() { return _reload; }
+	int GetClientsNum() { return _clientNum; }
+	std::string GetUrl() { return _url; }
+	MessageQueue<BenchInfo>* GetQueue() { return _messageQueue; }
+	std::vector<BenchClient*> GetClients() { return _clients; }
+
 private:
     int _force;
     int _reload;
