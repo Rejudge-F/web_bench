@@ -1,3 +1,5 @@
+#include "bench_client_manager.h"
+#include "util.h"
 #include <iostream>
 #include "common.h"
 #include <getopt.h>
@@ -54,10 +56,12 @@ int main(int argc, char *argv[])
 	int opt = 0;
 	int options_index = 0;
 
-	if(argc == 1) {
+	if(argc < 3) {
 		usage();
 		return 1;
 	}
+	
+	InitLogger("./logs/bench.log");
 
     while((opt = getopt_long(argc, argv, "Vfrt:u:c:?h", long_options, &options_index)) != EOF) {
         switch (opt) {
@@ -127,5 +131,9 @@ int main(int argc, char *argv[])
     printf("* port:            %d\n", proxyPort);
     printf("* url:             %s\n", url.c_str());
 
+	BenchClientManager *benchClientManager = 
+		new BenchClientManager(force, reload, method, 
+				clientsNum, proxyHost, proxyPort, url);
+	benchClientManager->BenchMark(benchTime);
 	return 0;
 }

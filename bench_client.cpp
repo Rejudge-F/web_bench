@@ -8,8 +8,6 @@ BenchClient::BenchClient(const std::string host, const int port, std::shared_ptr
 }
 
 BenchClient::~BenchClient() {
-    eTime = clock();
-    SPDLOG_DEBUG("finish: {0}: Method: {1} force: {2} forceReload: {3} eplased: {4} us", __FUNCTION__, args->httpMethod, args->force, args->forceReload, (double)(eTime-sTime));
     args.reset();
     sock.reset();
 }
@@ -17,7 +15,6 @@ BenchClient::~BenchClient() {
 // Bench Benchmark Callback function
 void BenchClient::Bench() {
     BenchInfo benchInfo;
-    char response[81920];
     ssize_t requestLen = args->request.length();
     memset(&benchInfo, 0, sizeof(benchInfo));
     nexttry:;
@@ -39,17 +36,19 @@ void BenchClient::Bench() {
 
         // recv response from server 
         if(args->force == 0) {
-            size_t responseLen = sock->Read(response);
+            size_t responseLen = sock->Read();
             if(responseLen < 0) {
                 benchInfo.failed++;
                 goto nexttry;
             }
-            SPDLOG_DEBUG("response: {0}\n", response);
             benchInfo.bytes += responseLen;
             benchInfo.speed++;
             break;
         }
     }
+
+    eTime = clock();
+    SPDLOG_DEBUG("finish: {0}: Method: {1} force: {2} forceReload: {3} eplased: {4} us", __FUNCTION__, args->httpMethod, args->force, args->forceReload, (double)(eTime-sTime));
     args->messageQeueue->Push(benchInfo);
 }
 

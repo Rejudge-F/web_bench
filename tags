@@ -1,0 +1,92 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/1df96c15/
+$(target)	makefile	/^$(target):$(objs)$/;"	t
+%.o	makefile	/^%.o:%.cpp $/;"	t
+.phony	makefile	/^.phony:clean run$/;"	t
+BENCH_CLIENT_H	bench_client.h	/^#define BENCH_CLIENT_H /;"	d
+BENCH_CLIENT_MANAGER_H	bench_client_manager.h	/^#define BENCH_CLIENT_MANAGER_H$/;"	d
+BENCH_SOCKET_H	bench_socket.h	/^#define BENCH_SOCKET_H /;"	d
+Bench	bench_client.cpp	/^void BenchClient::Bench() {$/;"	f	class:BenchClient	typeref:typename:void
+BenchClient	bench_client.cpp	/^BenchClient::BenchClient(const std::string host, const int port, std::shared_ptr<ClientArguments/;"	f	class:BenchClient
+BenchClient	bench_client.h	/^class BenchClient {$/;"	c
+BenchClientManager	bench_client_manager.cpp	/^BenchClientManager::BenchClientManager(int force, int reload, int method, int clients, std::stri/;"	f	class:BenchClientManager
+BenchClientManager	bench_client_manager.h	/^class BenchClientManager {$/;"	c
+BenchInfo	common.h	/^struct BenchInfo {$/;"	s
+BenchMark	bench_client_manager.cpp	/^void BenchClientManager::BenchMark() {$/;"	f	class:BenchClientManager	typeref:typename:void
+BuildRequest	bench_client_manager.cpp	/^std::string BenchClientManager::BuildRequest(std::string url) {$/;"	f	class:BenchClientManager	typeref:typename:std::string
+CC	makefile	/^CC=g++$/;"	m
+COMMON_H_	common.h	/^#define COMMON_H_$/;"	d
+ClientArguments	bench_client.h	/^struct ClientArguments {$/;"	s
+CreateThread	bench_client_manager.cpp	/^int CreateThread(void* (*func)(void *), void *args) {$/;"	f	typeref:typename:int
+Empty	message_queue.h	/^    bool Empty() {$/;"	f	class:MessageQueue	typeref:typename:bool
+GetSocket	bench_socket.cpp	/^int Socket::GetSocket() {$/;"	f	class:Socket	typeref:typename:int
+HTTP_10	common.h	/^    HTTP_10 = 10,$/;"	e	enum:HttpProtocolVersion
+HTTP_11	common.h	/^    HTTP_11 $/;"	e	enum:HttpProtocolVersion
+HttpMethod	common.h	/^enum HttpMethod {$/;"	g
+HttpProtocolVersion	common.h	/^enum HttpProtocolVersion {$/;"	g
+HttpVersion	bench_client_manager.cpp	/^static int HttpVersion=10;$/;"	v	typeref:typename:int	file:
+InitLogger	util.cpp	/^bool InitLogger(const std::string &logPath) {$/;"	f	typeref:typename:bool
+LINK	makefile	/^LINK=-lpthread$/;"	m
+MESSAGE_QUEUE_H	message_queue.h	/^#define MESSAGE_QUEUE_H$/;"	d
+METHOD_GET	common.h	/^    METHOD_GET = 1,$/;"	e	enum:HttpMethod
+METHOD_HEAD	common.h	/^    METHOD_HEAD,$/;"	e	enum:HttpMethod
+METHOD_OPTIONS	common.h	/^    METHOD_OPTIONS,$/;"	e	enum:HttpMethod
+METHOD_POST	common.h	/^    METHOD_POST,$/;"	e	enum:HttpMethod
+METHOD_TRACE	common.h	/^    METHOD_TRACE$/;"	e	enum:HttpMethod
+MessageQueue	message_queue.h	/^    MessageQueue() : _queue(), _mutex(), _condition() { }$/;"	f	class:MessageQueue
+MessageQueue	message_queue.h	/^class MessageQueue {$/;"	c
+Pop	message_queue.h	/^    bool Pop(Type& record, bool isBlocked = true) {$/;"	f	class:MessageQueue	typeref:typename:bool
+Push	message_queue.h	/^    void Push(Type record) {$/;"	f	class:MessageQueue	typeref:typename:void
+Read	bench_socket.cpp	/^ssize_t Socket::Read(char *buff) {$/;"	f	class:Socket	typeref:typename:ssize_t
+Size	message_queue.h	/^    int32_t Size() {$/;"	f	class:MessageQueue	typeref:typename:int32_t
+Socket	bench_socket.cpp	/^Socket::Socket(const char *host, int clientPort) {$/;"	f	class:Socket
+Socket	bench_socket.h	/^class Socket {$/;"	c
+Write	bench_socket.cpp	/^ssize_t Socket::Write(char *buff) {$/;"	f	class:Socket	typeref:typename:ssize_t
+_clientNum	bench_client_manager.h	/^    int _clientNum;$/;"	m	class:BenchClientManager	typeref:typename:int
+_clients	bench_client_manager.h	/^    std::vector<BenchClient*> _clients;$/;"	m	class:BenchClientManager	typeref:typename:std::vector<BenchClient * >
+_condition	message_queue.h	/^    std::condition_variable _condition;$/;"	m	class:MessageQueue	typeref:typename:std::condition_variable
+_eTime	bench_client_manager.h	/^    clock_t _eTime;$/;"	m	class:BenchClientManager	typeref:typename:clock_t
+_force	bench_client_manager.h	/^    int _force;$/;"	m	class:BenchClientManager	typeref:typename:int
+_messageQueue	bench_client_manager.h	/^    MessageQueue<BenchInfo> *_messageQueue;$/;"	m	class:BenchClientManager	typeref:typename:MessageQueue<BenchInfo> *
+_method	bench_client_manager.h	/^    int _method;$/;"	m	class:BenchClientManager	typeref:typename:int
+_mutex	message_queue.h	/^    mutable std::mutex _mutex;$/;"	m	class:MessageQueue	typeref:typename:std::mutex
+_proxyHost	bench_client_manager.h	/^    std::string _proxyHost;$/;"	m	class:BenchClientManager	typeref:typename:std::string
+_proxyPort	bench_client_manager.h	/^    int _proxyPort;$/;"	m	class:BenchClientManager	typeref:typename:int
+_queue	message_queue.h	/^    std::queue <Type> _queue;$/;"	m	class:MessageQueue	typeref:typename:std::queue<Type>
+_reload	bench_client_manager.h	/^    int _reload;$/;"	m	class:BenchClientManager	typeref:typename:int
+_sTime	bench_client_manager.h	/^    clock_t _sTime;$/;"	m	class:BenchClientManager	typeref:typename:clock_t
+_url	bench_client_manager.h	/^    std::string _url;$/;"	m	class:BenchClientManager	typeref:typename:std::string
+args	bench_client.h	/^    std::shared_ptr<ClientArguments> args;$/;"	m	class:BenchClient	typeref:typename:std::shared_ptr<ClientArguments>
+bytes	common.h	/^    int bytes;$/;"	m	struct:BenchInfo	typeref:typename:int
+callback	bench_client_manager.cpp	/^void* callback(void *client) {$/;"	f	typeref:typename:void *
+clean	makefile	/^clean:$/;"	t
+dir	makefile	/^dir=$(notdir $(src)) $/;"	m
+eTime	bench_client.h	/^    clock_t sTime, eTime;$/;"	m	class:BenchClient	typeref:typename:clock_t
+failed	common.h	/^    int failed;$/;"	m	struct:BenchInfo	typeref:typename:int
+force	bench_client.h	/^    int force;$/;"	m	struct:ClientArguments	typeref:typename:int
+forceReload	bench_client.h	/^    int forceReload;$/;"	m	struct:ClientArguments	typeref:typename:int
+httpMethod	bench_client.h	/^    int httpMethod;$/;"	m	struct:ClientArguments	typeref:typename:int
+logs	makefile	/^logs=.\/logs\/*$/;"	m
+main	main.cpp	/^int main() {$/;"	f	typeref:typename:int
+messageQeueue	bench_client.h	/^    MessageQueue<BenchInfo> *messageQeueue;$/;"	m	struct:ClientArguments	typeref:typename:MessageQueue<BenchInfo> *
+objs	makefile	/^objs=$(patsubst %.cpp,%.o,$(dir)) $/;"	m
+request	bench_client.h	/^    std::string request;$/;"	m	struct:ClientArguments	typeref:typename:std::string
+run	makefile	/^run:$/;"	t
+sTime	bench_client.h	/^    clock_t sTime, eTime;$/;"	m	class:BenchClient	typeref:typename:clock_t
+sock	bench_client.h	/^    std::shared_ptr<Socket> sock; $/;"	m	class:BenchClient	typeref:typename:std::shared_ptr<Socket>
+sock	bench_socket.h	/^    int sock;$/;"	m	class:Socket	typeref:typename:int
+speed	common.h	/^    int speed;$/;"	m	struct:BenchInfo	typeref:typename:int
+src	makefile	/^src=$(wildcard *.cpp) $/;"	m
+target	makefile	/^target=.\/bin\/App$/;"	m
+timerExpired	bench_client_manager.cpp	/^static volatile int timerExpired=0;$/;"	v	typeref:typename:volatile int	file:
+web_bench	README.md	/^# web_bench$/;"	c
+~BenchClient	bench_client.cpp	/^BenchClient::~BenchClient() {$/;"	f	class:BenchClient
+~BenchClientManager	bench_client_manager.cpp	/^BenchClientManager::~BenchClientManager() {$/;"	f	class:BenchClientManager
+~MessageQueue	message_queue.h	/^    virtual ~MessageQueue() { }$/;"	f	class:MessageQueue
+~Socket	bench_socket.cpp	/^Socket::~Socket() {$/;"	f	class:Socket

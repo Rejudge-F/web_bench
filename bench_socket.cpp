@@ -6,10 +6,6 @@
 #include <stdio.h>
 
 Socket::Socket(const char *host, int clientPort) {
-    // init logger and put log into logs/basic.log
-    auto fileLogger = spdlog::basic_logger_mt("basic_logge", "logs/basic.log");
-    spdlog::set_default_logger(fileLogger);
-
     unsigned long inaddr;
     sockaddr_in ad;
     hostent *hp;
@@ -22,7 +18,7 @@ Socket::Socket(const char *host, int clientPort) {
     } else {
         hp = gethostbyname(host);
         if(hp == nullptr) {
-            char errInfo[256];
+            char errInfo[2560];
             sprintf(errInfo, "%s", strerror(errno));
             SPDLOG_ERROR(errInfo);
             exit(1);
@@ -33,18 +29,18 @@ Socket::Socket(const char *host, int clientPort) {
 
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if(sock < 0) {
-        char errInfo[256];
+        char errInfo[2560];
         sprintf(errInfo, "%s", strerror(errno));
         SPDLOG_ERROR(errInfo);
         exit(1);
     } else {
         if(connect(sock, (struct sockaddr*)&ad, sizeof(ad)) < 0) {
-            char errInfo[265];
+            char errInfo[2650];
             sprintf(errInfo, "%s", strerror(errno));
             SPDLOG_ERROR(errInfo);
             exit(1);
         }
-        SPDLOG_INFO("{0}:{1} has connect", *host, clientPort);
+		SPDLOG_DEBUG("sock: {0} has connect {1}:{2}", sock, ad.sin_addr, ad.sin_port);
     }
 }
 
@@ -75,16 +71,26 @@ ssize_t Socket::Write(char *buff) {
     return retSize;
 }
 
-ssize_t Socket::Read(char *buff) {
+ssize_t Socket::Read() {
+	int flag = 
+		fcntl(sock, F_GETFL, 0);
+	fcntl(sock, F_SETFL, flag|O_NONBLOCK);
+
+	bool hasRead = false;
+
     ssize_t retSize = 0;
     char tmpBuff[1024];
     while(true) {
-        size_t readSize = read(sock, tmpBuff, 1024);
+        ssize_t readSize = read(sock, tmpBuff, 1024);
         if(readSize <= 0) {
-            break;
-        }
+			if(hasRead) {
+				break;
+			}
+			continue;
+		}
+		hasRead = true;
         retSize += readSize;
-        buff = strcat(buff, tmpBuff);
     }
+
     return retSize; 
 }

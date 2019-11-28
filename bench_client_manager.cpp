@@ -19,14 +19,16 @@ void* callback(void *client) {
 }
 
 // Create thread to run callback 
-int CreateThread(void* (*func)(void *), void *args) {
+pthread_t CreateThread(void* (*func)(void *), void *args) {
     pthread_t threadId;
     int ret = pthread_create(&threadId, nullptr, func, args);
     if(ret != 0) {
+		SPDLOG_DEBUG("CREATE THREAD FAILED");
+		std::cout << "create thread failed\n";
         perror(strerror(errno));
-        return -1;
+		exit(2);
     }
-    return (int)threadId;
+    return threadId;
 }
 
 BenchClientManager::BenchClientManager(int force, int reload, int method, int clients, std::string proxyHost, int proxyPort, std::string url):
@@ -43,8 +45,6 @@ BenchClientManager::BenchClientManager(int force, int reload, int method, int cl
 {}
 
 BenchClientManager::~BenchClientManager() {
-    _eTime = clock();
-    SPDLOG_INFO("bench mark: elpased time {0} us", (double)(_eTime-_sTime));
     for(int i = 0; i < (int)_clients.size(); i++) {
         delete _clients[i];
     }
@@ -149,20 +149,16 @@ void BenchClientManager::BenchMark(int benchTime) {
     clientArguments->forceReload = _reload;
     clientArguments->request = BuildRequest(_url);
     clientArguments->messageQeueue = _messageQueue;
-
-    for(int i = 0; i < _clientNum; i++) {
-        // start thread to test        
-        BenchClient *benchClient = new BenchClient(_proxyHost, _proxyPort, clientArguments);
-        _clients.push_back(benchClient);
-        int pid = CreateThread(callback, static_cast<void*>(benchClient));
-        if(pid == -1) {
-            SPDLOG_ERROR("THREAD CREATE FAILED!");
-            continue;
-        }
-    } 
-
-    std::shared_ptr<BenchInfo> benchSum;
-    memset(&benchSum, 0, sizeof(benchSum));
+		for(int i = 0; i < _clientNum; i++) {
+    	    // start thread to test        
+    	    BenchClient *benchClient = new BenchClient(
+					_proxyHost, _proxyPort, 
+					clientArguments);
+    	    _clients.push_back(benchClient);
+			CreateThread(callback, 
+					static_cast<void*>(benchClient));
+    	}
+    std::shared_ptr<BenchInfo> benchSum(new BenchInfo());
 
     int client_num = _clientNum;
     
@@ -184,6 +180,12 @@ void BenchClientManager::BenchMark(int benchTime) {
     }
 
 	std::cout << "speed: " <<  benchSum->speed << " failed: " << benchSum->failed << " bytes: " << benchSum->bytes << " Bytes" << std::endl;
+
+    _eTime = clock();
+	double eplasedTime = (double)(_eTime-_sTime);
+    printf("bench mark: elpased time %.6lf us\n", (double)(_eTime-_sTime));
+	printf("%.6lf us/op\n", eplasedTime / benchSum->speed);
+	printf("%.6lf B/s\n", (double)(benchSum->bytes / eplasedTime));
 
 	return ;
 }
