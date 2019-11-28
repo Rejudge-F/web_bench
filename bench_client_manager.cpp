@@ -15,6 +15,7 @@ static void alarm_handler(int signal) {
 void* callback(void *client) {
     BenchClient *benchClient = static_cast<BenchClient *>(client);
     benchClient->Bench();
+	pthread_exit(nullptr);
     return nullptr;
 }
 
@@ -29,6 +30,37 @@ pthread_t CreateThread(void* (*func)(void *), void *args) {
 		exit(2);
     }
     return threadId;
+}
+
+void* AsyncCreateThread(void* arg) {
+	BenchClientManager* benchClientManager = 
+		static_cast<BenchClientManager*>(arg);
+		// Form Arguments
+    std::shared_ptr<ClientArguments> 
+		clientArguments(new ClientArguments);
+    clientArguments->httpMethod = 
+		benchClientManager->GetMethod();
+    clientArguments->force = 
+		benchClientManager->GetForce();
+    clientArguments->forceReload = 
+		benchClientManager->GetReload();
+    clientArguments->request = 
+		benchClientManager->BuildRequest(
+				benchClientManager->GetUrl());
+    clientArguments->messageQeueue = 
+		benchClientManager->GetQueue();
+
+	for(int i = 0; i < benchClientManager->GetClientsNum(); i++) {
+        // start thread to test        
+        BenchClient *benchClient = new BenchClient(
+				benchClientManager->GetHost(),
+				benchClientManager->GetPort(),
+				clientArguments);
+        benchClientManager->GetClients().push_back(benchClient);
+		CreateThread(callback, 
+				static_cast<void*>(benchClient));
+    }
+	return nullptr;
 }
 
 BenchClientManager::BenchClientManager(int force, int reload, int method, int clients, std::string proxyHost, int proxyPort, std::string url):
@@ -142,22 +174,8 @@ void BenchClientManager::BenchMark(int benchTime) {
     
     alarm(benchTime); // after benchtime,then exit
 
-    // Form Arguments
-    std::shared_ptr<ClientArguments> clientArguments(new ClientArguments);
-    clientArguments->httpMethod = _method;
-    clientArguments->force = _force;
-    clientArguments->forceReload = _reload;
-    clientArguments->request = BuildRequest(_url);
-    clientArguments->messageQeueue = _messageQueue;
-		for(int i = 0; i < _clientNum; i++) {
-    	    // start thread to test        
-    	    BenchClient *benchClient = new BenchClient(
-					_proxyHost, _proxyPort, 
-					clientArguments);
-    	    _clients.push_back(benchClient);
-			CreateThread(callback, 
-					static_cast<void*>(benchClient));
-    	}
+	pthread_t tPid;
+	pthread_create(&tPid, nullptr, AsyncCreateThread, this);
     std::shared_ptr<BenchInfo> benchSum(new BenchInfo());
 
     int client_num = _clientNum;
