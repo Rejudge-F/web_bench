@@ -3,7 +3,7 @@ dir=$(notdir $(src))
 objs=$(patsubst %.cpp,%.o,$(dir)) 
 logs=./logs/*
 CC=g++
-CFLAGS=-Wall -g -O3 
+CFLAGS=-Wall -g -O3 -finput-charset=UTF-8 -fexec-charset=UTF-8 
 LINK=-lpthread
 
 
